@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+
+echo -e "\033[1;32mUpdating config-files...\033[0m"
+pacman -Qqe > /home/jason/.build/git/config-files/pkglist.txt
+sudo rsync -a --chown=jason:jason /etc/hosts /home/jason/.build/git/config-files/etc
+sudo rsync -a --chown=jason:jason /etc/makepkg.conf /home/jason/.build/git/config-files/etc
+sudo rsync -a --chown=jason:jason /etc/mkinitcpio.conf /home/jason/.build/git/config-files/etc
+sudo rsync -a --chown=jason:jason /etc/nftables.conf /home/jason/.build/git/config-files/etc
+sudo rsync -a --chown=jason:jason /etc/pacman.conf /home/jason/.build/git/config-files/etc
+sudo rsync -a --chown=jason:jason /etc/sysctl.conf /home/jason/.build/git/config-files/etc
+sudo rsync -a --chown=jason:jason /etc/unbound/unbound.conf /home/jason/.build/git/config-files/etc
+sudo rsync -a --chown=jason:jason /etc/X11 /home/jason/.build/git/config-files/etc
+
+echo -e "\033[1;32mUpdating linux-scripts...\033[0m"
+rsync -a /home/jason/.local/bin/compile /home/jason/.build/git/linux-scripts/compile/compile
+rsync -a /home/jason/.local/bin/{deadd-brightness,deadd-volume,git_sync,lockscreen,polybar_launch,rmorphan,rofi-power-menu,update-boot,update-mirrors,roll,usage} /home/jason/.build/git/linux-scripts
+rsync -a /home/jason/.local/bin/libs /home/jason/.build/git/linux-scripts
+
+echo -e "\033[1;32mUpdating kernel-manager... \033[0m"
+rsync -a /home/jason/.local/bin/kernel /home/jason/.build/git/custom-kernel-manager
+rsync -a /home/jason/.config/kernel/kernel.conf /home/jason/.build/git/custom-kernel-manager
