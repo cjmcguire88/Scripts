@@ -2,7 +2,6 @@
 
 [[ -f $XDG_RUNTIME_DIR/hosts ]] && rm -rf $XDG_RUNTIME_DIR/hosts*
 aria2c -x 3 -m 3 -d $XDG_RUNTIME_DIR/ https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
-sed -i -e 1,36d $XDG_RUNTIME_DIR/hosts
 head -n 15 /etc/hosts >> $XDG_RUNTIME_DIR/hosts.new
-cat $XDG_RUNTIME_DIR/hosts >> $XDG_RUNTIME_DIR/hosts.new
+tail +37 $XDG_RUNTIME_DIR/hosts >> $XDG_RUNTIME_DIR/hosts.new
 mv $XDG_RUNTIME_DIR/hosts.new ~/
