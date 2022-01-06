@@ -16,6 +16,9 @@ function main() {
                VOLUME=0
            fi
            ;;
+        "sink")
+            echo $SINK
+           ;;
     esac
 
     case $VOLUME in
