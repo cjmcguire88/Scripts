@@ -22,6 +22,7 @@ else
         grub-mkconfig -o /boot/grub/grub.cfg
         echo -e "\033[1;34m:: \033[1;37mlinux-${1} --> systemd-boot\033[0m"
         sed -i "s/linux-$(uname -r)/linux-${1}/g" $SYSD_CONFIG
+#       sed -i "s/\([0-9]*\.[0-9]*\.[0-9]\)/${1}/" $SYSD_CONFIG
         if $(grep -q "$1" /boot/loader/entries/MiniBeast.conf); then
             echo -e "\033[1;32mSuccessful\033[0m"
         else
