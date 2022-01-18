@@ -1,7 +1,33 @@
 #!/usr/bin/env bash
 
-[[ -f $XDG_RUNTIME_DIR/hosts ]] && rm -rf $XDG_RUNTIME_DIR/hosts*
-aria2c -x 3 -m 3 -d $XDG_RUNTIME_DIR/ https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
-head -n 15 /etc/hosts >> $XDG_RUNTIME_DIR/hosts.new
-tail +37 $XDG_RUNTIME_DIR/hosts >> $XDG_RUNTIME_DIR/hosts.new
-mv $XDG_RUNTIME_DIR/hosts.new ~/
+exoe() {
+    echo -e "\033[1;31m"$1"\033[0m"
+    exit 1
+}
+
+main() {
+    aria2c -x 3 -m 3 -d /run https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+    head -n 15 /etc/hosts >> /run/hosts.new
+    tail +37 /run/hosts >> /run/hosts.new
+    sudo -i -u "$SUDO_USER" nvim /run/hosts.new
+    read -t 10 -n 1 -p $'\n\033[1;37mApply changes? \033[0m[y/N]: ' REPLY
+    echo
+    if [[  $REPLY =~ ^[Yy]$ ]]; then
+        echo
+        chattr -V -i /etc/hosts
+        echo
+        cp -v /etc/hosts /etc/hosts.old
+        cp -v /run/hosts.new /etc/hosts
+        echo
+        chattr -V +i /etc/hosts
+        echo
+        rm -v /run/hosts*
+    else
+        exit 0
+    fi
+}
+if [ "$EUID" -ne 0 ]; then
+    exoe "Must be run as root"
+else
+    main
+fi
