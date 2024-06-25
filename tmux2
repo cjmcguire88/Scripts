@@ -1,0 +1,2 @@
+#!/bin/zsh
+bspc node -t \~fullscreen && tmux new-session \; split-window -h \; split-window -v \; attach

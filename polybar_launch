@@ -1,0 +1,12 @@
+#!/bin/bash
+
+HDMI1="xrandr | grep '\bconnected' | grep 'HDMI-1' | awk '{ print $2 }'"
+
+polybar mainbar-bspwm 2>&1 | tee -a /tmp/polybar.log & disown
+polybar mainbar-bspwm-extra 2>&1 | tee -a /tmp/polybar-dock.log & disown
+
+if [[ $HDMI1 =~ connected ]]; then
+        polybar mainbar-bspwm-hdmi 2>&1 | tee -a /tmp/polybar-hdmi.log & disown
+fi
+
+exit 0

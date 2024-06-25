@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+
+# ██████╗ ██╗ ██████╗██╗  ██╗██████╗  ██████╗ ██╗     ██╗
+# ██╔══██╗██║██╔════╝██║ ██╔╝██╔══██╗██╔═══██╗██║     ██║
+# ██████╔╝██║██║     █████╔╝ ██████╔╝██║   ██║██║     ██║
+# ██╔══██╗██║██║     ██╔═██╗ ██╔══██╗██║   ██║██║     ██║
+# ██║  ██║██║╚██████╗██║  ██╗██║  ██║╚██████╔╝███████╗███████╗
+# ╚═╝  ╚═╝╚═╝ ╚═════╝╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚══════╝
+
+# Rick Astley in your Terminal.
+# By Serene Han and Justine Tunney <3
+# Modified so that all files are local
+
+# edit these variables to the correct directories
+vid='/home/jason/.local/bin/libs/rick.vid'
+aud='/home/jason/.local/bin/libs/roll.aud'
+audpid=0
+echo -en '\x1b[s'  # Save cursor.
+
+cleanup() {
+    (( audpid > 1 )) && kill $audpid 2>/dev/null;
+}
+quit() {
+    echo -e "\x1b[2J \x1b[?25h \x1b[H";
+}
+
+trap "cleanup" INT
+trap "quit" EXIT
+
+echo -en "\x1b[?25l \x1b[2J \x1b[H"  # Hide cursor, clear screen.
+
+pw-play $aud &
+audpid=$!
+python <(cat <<EOF
+import sys
+import time
+fps = 60; time_per_frame = 2.4 / fps
+buf = ''; frame = 0; next_frame = 0
+begin = time.time()
+try:
+  for i, line in enumerate(sys.stdin):
+    if i % 32 == 0:
+      frame += 1
+      sys.stdout.write(buf); buf = ''
+      elapsed = time.time() - begin
+      repose = (frame * time_per_frame) - elapsed
+      if repose > 0.0:
+        time.sleep(repose)
+      next_frame = elapsed / time_per_frame
+    if frame >= next_frame:
+      buf += line
+except KeyboardInterrupt:
+  pass
+EOF
+) < <(cat $vid)
