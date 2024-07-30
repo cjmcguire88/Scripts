@@ -24,10 +24,10 @@
 # END_OF_HEADER
 #================================================================
 
-local M_TIME=$(stat "$SRC_DIR"/linux-"$(uname -r)"/arch/x86_64/boot/bzImage| awk -F " " '/Modify:/ {print $2}')
-local KERNELS=$(ls "$KERNEL_DIR"/vmlinuz-linux*)
-local BACKUPS=$(ls "$SRC_DIR"/backups/*.tar.gz)
-local UKI=$(ls "$KERNEL_DIR"/*.efi)
+M_TIME=$(stat "$SRC_DIR"/linux-"$(uname -r)"/arch/x86_64/boot/bzImage| awk -F " " '/Modify:/ {print $2}')
+KERNELS=$(ls "$KERNEL_DIR"/vmlinuz-linux*)
+BACKUPS=$(ls "$SRC_DIR"/backups/*.tar.gz)
+UKI=$(ls "$KERNEL_DIR"/EFI/Linux/*.efi)
 
 echo -e "\033[1;37mKernel version: \033[1;32mlinux-$(uname -r)\033[0m
 \033[1;37mKernel source directory:\033[0m $SRC_DIR/linux-$(uname -r)/

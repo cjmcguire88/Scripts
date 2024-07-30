@@ -34,13 +34,13 @@
 # END_OF_HEADER
 #================================================================
 
-local VERS="$1"
-local MAJ_VER="${1:0:1}"
+VERS="$1"
+MAJ_VER="${1:0:1}"
 
 if [[ $(awk -F "." '{print NF}' <<< "$VERS") -lt 3 ]]; then
-    local MVERS=${VERS}.0
+    MVERS=${VERS}.0
 else
-    local MVERS=${VERS}
+    MVERS=${VERS}
 fi
 [[ "$VERS" =~ ^[0-9]+\.[0-9]+\.?[0-9]*$ ]] || exoe "Not a valid kernel version"
 cd "$BUILD_DIR" || exoe "$BUILD_DIR not found"
