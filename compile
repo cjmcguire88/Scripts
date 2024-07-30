@@ -6,101 +6,157 @@
 # Here you can edit the directories that compile uses.
 # Do NOT add a trailing / to the end of the directory!!!
 #
-# The source directory where packages will be kept
+# The source directory where new packages will be built
 SRC_DIR=$HOME/.build/sources
-#
+# The log directory specified in /etc/makepkg.conf
+LOG_DIR=$HOME/.build/log
 # Directory where compile will output errors.
 RUNTIME_DIR=$XDG_RUNTIME_DIR
 #
 # Do not make any edits below this line
 #-------------------------------------------------------------------------*
+
+# Error handler
 exoe() {
-    echo -e "\033[1;31m${1}\033[0m" >&2
-    exit 1
+  echo -e "\033[1;31m${1}\033[0m" >&2
+  exit 1
 }
+# If makepkg encounters an error this function will be called.
 add_key() {
-    key="$(cat $RUNTIME_DIR/compile_error | grep -m 1 FAILED | awk -F "key" '{print $2}')"
-    gpg --recv-keys --keyserver hkp://keys.gnupg.net "${key::-1}"
-    keys+=${key::-1}
-}
-upd() {
-    if sudo pacman -Sy > /dev/null 2>&1; then
-        pacman -Qu
-        echo
-        echo -en  "\033[1;34m:: \033[1;37mCompile $(pacman -Qu | wc -l) packages? \033[0m[y/N]: "
-        read -n 1 REPLY
-        echo
-        [[ $REPLY =~ ^[Yy]$ ]] && comp $(pacman -Qu | awk '{print $1}')
-        exit
+  key="$(grep -m 1 FAILED "$RUNTIME_DIR/compile_error" | awk -F "key" '{print $2}')"
+  if [ -n "$key" ]; then # If a key is missing it will prompt the user to add it.
+    grep "unknown public key" "$RUNTIME_DIR/compile_error"
+    echo -e "\033[1;34m:: \033[1;37mAdd key: ${key::-1}?\033[0m"
+    read -t 10 -n 1 REPLY # Prompt for 10 seconds then proceed without adding key if no response.
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+      echo -e "\033[1;34m:: \033[1;37mAdding key...\033[0m"
+      if gpg --recv-keys "${key::-1}"; then
+        keys+=${key::-1}
+        return 0
+      else # If gpg fails add_key will return 1 and the function will exit
+        echo -e "\033[1;31m:: \033[1;37mFailed to add key\033[0m"
+        failed+=("$pkg")
+        return 1
+      fi
     else
-        exoe "Cannot refresh database"
+      echo -e "\033[1;33m:: \033[1;37mSkipping $pkg...\033[0m"
+      return 1
     fi
-}
-comp() {
-    for pkg in "$@"
-    do
-        rm -rf $SRC_DIR/{packages,community}/$pkg
-        echo -e "\033[1;34m:: \033[1;37mDownloading $pkg PKGBUILD...\033[0m"
-        cd $SRC_DIR || exoe "Missing source directory"
-        pkgctl repo clone --protocol=https $pkg
-        cd $SRC_DIR/$pkg || exoe "No source directory"
-        echo -e "\n\033[1;34m:: \033[1;37mAttemping compilation\033[0m\n"
-        if makepkg -Lsi --noconfirm 2> $RUNTIME_DIR/compile_error; then
-            echo -e "\033[1;34m:: \033[1;37mInstallation successful\033[0m\n"
-            successful+=("${pkg}")
-        else
-            cat $RUNTIME_DIR/compile_error | grep -q "unknown public key"
-            echo -e "\033[1;34m:: \033[1;33mAdding key and retrying...\033[0m"
-            add_key
-            if makepkg -Li --noconfirm 2> $RUNTIME_DIR/${pkg}-error.txt; then
-                echo -e "\033[1;34m:: \033[1;37mInstallation successful\033[0m\n"
-                successful+=("${pkg}")
-            else
-                echo -e "\033[1;31mFailed to compile ${pkg}"
-                failed+=("${pkg} - \033[31mSee ${RUNTIME_DIR}/${pkg}-error.txt\033[0m")
-            fi
-        fi
+  else # It is assumed to be a compilation error and the function will return after finding any logs.
+    for log in "$LOG_DIR/${pkg}"*; do
+      logs+=("$log")
+      failed+=("$pkg")
     done
-    if [ -z "$failed" ]; then
-        echo -e "\033[1;34m:: \033[1;37mAll packages compiled and installed successfully\033[0m\n"
-        for i in "${successful[@]}"; do
-            echo -e "$i" ; done
-        if [ ! -z "$keys" ]; then
-            echo -e "\n\033[1;34m:: \033[1;37mKeys added:\033[0m"
-            for i in "${keys[@]}"; do
-                echo -e "$i" ; done
-        fi
-    elif [ -z "$successful" ]; then
-        echo -e "\n\033[1;34m:: \033[1;31mFailed:\033[0m"
-        for i in "${failed[@]}"; do
-            echo -e "$i" ; done
-        if [ ! -z "$keys" ]; then
-            echo -e "\n\033[1;34m:: \033[1;37mKeys added:\033[0m\n"
-            for i in "${keys[@]}"; do
-                echo -e "$i" ; done
-        fi
-    else
-        echo -e "\n\033[1;34m:: \033[1;37mSuccessful:\033[0m"
-        for i in "${successful[@]}"; do
-            echo -e "$i" ; done
-        echo -e "\n\033[1;34m:: \033[1;31mFailed:\033[0m"
-        for i in "${failed[@]}"; do
-            echo -e "$i" ; done
-        if [ ! -z "$keys" ]; then
-            echo -e "\n\033[1;34m:: \033[1;37mKeys added:\033[0m"
-            for i in "${keys[@]}"; do
-                echo -e "$i" ; done
-        fi
-    fi
+    return 1
+  fi
 }
-while getopts 'u' flag; do
-    case "${flag}" in
-        u)
-            upd; exit
-            ;;
-        *)
-            exoe "Invalid usage"
-            ;;
-    esac
-done
-comp "$@"
+# Ran from -u flag. It will compile whatever packages are available for upgrade.
+# upd() {
+#   if sudo pacman -Sy >/dev/null 2>&1; then
+#     pacman -Qu
+#     echo
+#     echo -en "\033[1;34m:: \033[1;37mCompile $(pacman -Qu | wc -l) packages? \033[0m[y/N]: "
+#     read -n 1 REPLY
+#     echo
+#     [[ $REPLY =~ ^[Yy]$ ]] && comp "$(pacman -Qu | awk '{print $1}')"
+#     exit
+#   else
+#     exoe "Cannot refresh database"
+#   fi
+# }
+comp() {
+  for pkg in "$@"; do
+    # Check for existing source directory and gzip it to cache if found.
+    [[ -d "$SRC_DIR/$pkg" ]] && rm -rf "$SRC_DIR/$pkg"
+    echo -e "\033[1;34m:: \033[1;37mDownloading $pkg PKGBUILD...\033[0m"
+    cd "$SRC_DIR" || exoe "Missing source directory"
+    pkgctl repo clone "$pkg" # Arch Build System - downloads source
+    cd "$SRC_DIR/$pkg" || exoe "No source directory"
+    echo -e "\n\033[1;34m:: \033[1;37mAttemping compilation\033[0m\n"
+    # Calls makepkg to compile and install the package and outputs errors to compile_error
+    # No confirm is used to avoid it waiting for a prompt when compiling a list of packages.
+    if makepkg -Lsi --noconfirm 2>"$RUNTIME_DIR/compile_error"; then
+      echo -e "\033[1;34m:: \033[1;37mInstallation successful\033[0m\n"
+      successful+=("${pkg}")
+    else               # If errors are found it will check for a key and add it if desired.
+      if add_key; then # If a key is added try installation again.
+        if makepkg -Li --noconfirm; then
+          echo -e "\033[1;34m:: \033[1;37mInstallation successful\033[0m\n"
+          successful+=("${pkg}")
+        else
+          echo -e "\033[1;31mFailed to compile ${pkg}"
+          failed+=("$pkg")
+        fi
+      fi
+    fi
+  done
+  # Output results of package compilation
+  if [ -z "$failed" ]; then
+    echo -e "\033[1;34m:: \033[1;37mAll packages compiled and installed successfully\033[0m\n"
+    for i in "${successful[@]}"; do
+      echo -e "$i"
+    done
+    if [ -n "$keys" ]; then
+      echo -e "\n\033[1;33m:: \033[1;37mKeys added:\033[0m"
+      for i in "${keys[@]}"; do
+        echo "$i"
+      done
+    fi
+  elif [ -z "$successful" ]; then
+    echo -e "\n\033[1;31m:: \033[1;37mFailed:\033[0m"
+    for i in "${failed[@]}"; do
+      echo "$i"
+    done
+    if [ -n "$logs" ]; then
+      echo -e "\n\033[1;33m:: \033[1;37mLogs:\033[0m"
+      for i in "${logs[@]}"; do
+        echo "$i"
+      done
+    fi
+    if [ -n "$keys" ]; then
+      echo -e "\n\033[1;33m:: \033[1;37mKeys added:\033[0m\n"
+      for i in "${keys[@]}"; do
+        echo "$i"
+      done
+    fi
+  else
+    echo -e "\n\033[1;34m:: \033[1;37mSuccessful:\033[0m"
+    for i in "${successful[@]}"; do
+      echo "$i"
+    done
+    echo -e "\n\033[1;31m:: \033[1;37mFailed:\033[0m"
+    for i in "${failed[@]}"; do
+      echo "$i"
+    done
+    echo -e "\n\033[1;33m:: \033[1;37mLogs:\033[0m"
+    if [ -n "$logs" ]; then
+      for i in "${logs[@]}"; do
+        echo "$i"
+      done
+    fi
+    if [ -n "$keys" ]; then
+      echo -e "\n\033[1;33m:: \033[1;37mKeys added:\033[0m"
+      for i in "${keys[@]}"; do
+        echo "$i"
+      done
+    fi
+  fi
+}
+# Parse flags
+# while getopts 'u' flag; do
+#   case "${flag}" in
+#   u)
+#     upd
+#     ;;
+#   *)
+#     exoe "Invalid usage"
+#     ;;
+#   esac
+# done
+# Check for root
+if [ "$EUID" -eq 0 ]; then
+  exoe "Do not run as root"
+else # Create any missing directories before downloading and compiling
+  [[ ! -d $SRC_DIR ]] && mkdir -p "$SRC_DIR"
+  comp "$@"
+fi
