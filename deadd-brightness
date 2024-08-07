@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 
 if [ "$1" == "inc" ]; then
-    xbacklight -inc 5
+  brightnessctl set 5%+
 fi
 
 if [ "$1" == "dec" ]; then
-    xbacklight -dec 5
+  brightnessctl set 5%-
 fi
 
-BRIGHTNESS=$(xbacklight -get)
-NOTI_ID=$(notify-send.py "Brightness" "$BRIGHTNESS/100" \
-                         --hint string:image-path:video-display boolean:transient:true \
-                                int:has-percentage:$BRIGHTNESS \
-                         --replaces-process "brightness-popup")
-
+BRIGHTNESS=$(brightnessctl get)
+BRIGHTNESS=$((BRIGHTNESS * 100 / 255))
+NOTI_ID=$(notify-send.py "Brightness" "$BRIGHTNESS%" \
+  --hint string:image-path:video-display boolean:transient:true \
+  int:has-percentage:$BRIGHTNESS \
+  --replaces-process "brightness-popup")
