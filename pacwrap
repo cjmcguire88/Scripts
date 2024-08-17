@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+# Function to display the Arch name in blue
 arch_name() {
   echo -e "\033[1;34m
            █████╗ ██████╗  ██████╗██╗  ██╗
@@ -17,24 +18,28 @@ arch_name() {
   \033[0m"
 }
 
+# Function to display a blinking Pac-Man word in cyan
 pac_word() {
-  echo -e "\033[1;36m
-  ░       ░░░░      ░░░░      ░░░  ░░░░  ░░░      ░░░   ░░░  ░
-  ▒  ▒▒▒▒  ▒▒  ▒▒▒▒  ▒▒  ▒▒▒▒  ▒▒   ▒▒   ▒▒  ▒▒▒▒  ▒▒    ▒▒  ▒
-  ▓       ▓▓▓  ▓▓▓▓  ▓▓  ▓▓▓▓▓▓▓▓        ▓▓  ▓▓▓▓  ▓▓  ▓  ▓  ▓
-  █  ████████        ██  ████  ██  █  █  ██        ██  ██    █
-  █  ████████  ████  ███      ███  ████  ██  ████  ██  ███   █
-  \033[0m"
+  echo -e "\033[1;5;36m
+    ░       ░░░░      ░░░░      ░░░  ░░░░  ░░░      ░░░   ░░░  ░
+    ▒  ▒▒▒▒  ▒▒  ▒▒▒▒  ▒▒  ▒▒▒▒  ▒▒   ▒▒   ▒▒  ▒▒▒▒  ▒▒    ▒▒  ▒
+    ▓       ▓▓▓  ▓▓▓▓  ▓▓  ▓▓▓▓▓▓▓▓        ▓▓  ▓▓▓▓  ▓▓  ▓  ▓  ▓
+    █  ████████        ██  ████  ██  █  █  ██        ██  ██    █
+    █  ████████  ████  ███      ███  ████  ██  ████  ██  ███   █
+    \033[0m"
+  sleep 0.5
 }
+
+# Function to display the Pac-Man logo in yellow
 pac_logo() {
   echo -e "\033[1;33m
-            ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣤⣤⣤⣤⣤⣤⣤⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-            ⠀⠀⠀⠀⠀⠀⠀⢀⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-            ⠀⠀⠀⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-            ⠀⠀⠀⢠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠛⠻⣿⣿⣿⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-            ⠀⠀⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⡿⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-            ⠀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣤⣴⣿⣿⣿⣿⣿⡿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-            ⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+            ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣤⣤⣤⣤⣤⣤⣤⣤⣤⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+            ⠀⠀⠀⠀⠀⠀⠀⢀⣤⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣤⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+            ⠀⠀⠀⠀⠀⣠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+            ⠀⠀⠀⢠⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠛⠻⣿⣿⣿⣿⣿⣿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+            ⠀⠀⣰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⡿⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+            ⠀⣸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣤⣴⣿⣿⣿⣿⣿⡿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+            ⢰⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
             ⣾⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠋⠁⠀⠀⠀⢀⣀⠀⠀⠀⠀⠀⠀⠀⣀⠀⠀⠀⠀⠀⠀⢀⣀⠀⠀
             ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠟⠋⠁⠀⠀⠀⠀⠀⣴⣿⣿⣿⣦⠀⠀⠀⣼⣿⣿⣿⡆⠀⠀⠀⣴⣿⣿⣿⣆
             ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⣦⣀⠀⠀⠀⠀⠀⠀⢿⣿⣿⣿⡟⠀⠀⠀⢿⣿⣿⣿⠏⠀⠀⠀⢿⣿⣿⣿⠏
@@ -42,18 +47,18 @@ pac_logo() {
             ⠸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
             ⠀⢻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
             ⠀⠀⠻⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣷⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-            ⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-            ⠀⠀⠀⠀⠀⠛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
-            ⠀⠀⠀⠀⠀⠀⠀⠉⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+            ⠀⠀⠀⠙⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+            ⠀⠀⠀⠀⠀⠛⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⡿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+            ⠀⠀⠀⠀⠀⠀⠀⠉⠻⢿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
             ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠛⠛⠻⠿⠿⠟⠛⠛⠋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
   \033[0m"
 }
 
-ghost_logo() {
-  echo -e "\033[1;31m
+# Ghosts display in different colors
+ghost="
               ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
               ⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀⠀⠀
-              ⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀
+              ⠀⠀⠀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⠀⠀⠀⠀
               ⠀⠀⣶⣶⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣶⣶⠀⠀
               ⠀⠀⣿⣿⣿⣿⡟⠛⠛⠛⠛⣿⣿⣿⣿⣿⣿⣿⣿⠛⠛⠛⠛⢻⣿⣿⣿⣿⠀⠀
               ⠀⠀⣿⣿⡟⠛⠃⠀⠀⠀⠀⠛⠛⣿⣿⣿⣿⠛⠛⠀⠀⠀⠀⠘⠛⢻⣿⣿⠀⠀
@@ -66,9 +71,24 @@ ghost_logo() {
               ⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿⣿
               ⣿⣿⣿⣿⣿⠀⢹⣿⣿⣿⣿⣿⣿⡇⠀⠀⠘⣿⣿⣿⣿⣿⣿⡇⠀⣿⣿⣿⣿⣿
               ⣿⣿⡏⠀⠀⠀⠀⠀⢹⣿⣿⣿⣿⠁⠀⠀⠀⣿⣿⣿⣿⡇⠀⠀⠀⠀⠀⢻⣿⣿
-  \033[0m"
+"
+
+# Ghosts success in green
+ghost_success() {
+  echo -e "\033[1;32m$ghost\033[0m"
 }
 
+# Ghosts warning in yellow
+ghost_warning() {
+  echo -e "\033[1;33m$ghost\033[0m"
+}
+
+# Ghosts error in red
+ghost_error() {
+  echo -e "\033[1;31m$ghost\033[0m"
+}
+
+# Function to display the ABS name in blue
 abs_name() {
   echo -e "\n\033[1;34m
         +-+-+-+-+ +-+-+-+-+-+ +-+-+-+-+-+-+ 
@@ -77,37 +97,50 @@ abs_name() {
   \033[0m"
 }
 
+# Function to update the system packages
 update() {
   pac_word
   echo -e "\n\033[1;32mUpdate packages?\033[0m"
   read -r -n 1 -p "[y,N]: " ANSWER
-  if [[ $ANSWER =~ ^[Yy]$ ]]; then
+  echo
+  if [[ "$ANSWER" =~ ^[Yy]$ ]]; then
     pac_logo
-    sudo pacman -Syu --noconfirm
-    ghost_logo
+    if sudo pacman -Syu --noconfirm; then
+      ghost_success
+    else
+      ghost_error
+      return 1
+    fi
   else
-    ghost_logo
+    ghost_warning
     return 1
   fi
 }
 
+# Function to update AUR packages
 update_aur() {
   pac_word
   echo -e "\n\033[1;32mUpdate AUR packages?\033[0m"
   read -r -n 1 -p "[y,N]: " ANSWER
-  if [[ $ANSWER =~ ^[Yy]$ ]]; then
+  echo
+  if [[ "$ANSWER" =~ ^[Yy]$ ]]; then
     pac_logo
-    paru -Sua --upgrademenu
-    ghost_logo
+    if paru -Sua --noconfirm; then
+      ghost_success
+    else
+      ghost_error
+      return 1
+    fi
   else
-    ghost_logo
+    ghost_warning
     return 1
   fi
 }
 
+# Function to check for updates
 check_update() {
   mapfile -t updates < <(checkupdates)
-  if [ -n "$updates" ]; then
+  if [ "${#updates[@]}" -gt 0 ]; then
     echo -e "\n\033[1;32m${#updates[@]} updates\033[0m"
     for update in "${updates[@]}"; do
       echo -e "${update}"
@@ -119,9 +152,10 @@ check_update() {
   fi
 }
 
+# Function to check for AUR updates
 check_update_aur() {
   mapfile -t aur_updates < <(paru -Qua)
-  if [ -n "$aur_updates" ]; then
+  if [ "${#aur_updates[@]}" -gt 0 ]; then
     echo -e "\n\033[1;32m${#aur_updates[@]} updates\033[0m"
     for update in "${aur_updates[@]}"; do
       echo -e "${update}"
@@ -133,12 +167,13 @@ check_update_aur() {
   fi
 }
 
+# Function to display total packages
 total_pkgs() {
-  local -r pkg_all=$(pacman -Q | wc -l)
-  local -r pkg_expl=$(pacman -Qe | wc -l)
-  local -r pkg_deps=$(pacman -Qd | wc -l)
-  local -r pkg_aur=$(pacman -Qm | wc -l)
-  local -r size=$(du -h /usr/bin | tail -1 | awk '{print $1}')
+  local pkg_all=$(pacman -Q | wc -l)
+  local pkg_expl=$(pacman -Qe | wc -l)
+  local pkg_deps=$(pacman -Qd | wc -l)
+  local pkg_aur=$(pacman -Qm | wc -l)
+  local size=$(du -sh /usr/bin | awk '{print $1}')
 
   echo -e "
                \033[1;34mPackages:      \033[0m $pkg_all\n \
@@ -148,6 +183,7 @@ total_pkgs() {
               \033[1;34mTotal Size:     \033[1;37m$size\033[0m\n"
 }
 
+# Main function to run the script
 main() {
   arch_name
   total_pkgs
@@ -158,4 +194,5 @@ main() {
     update_aur
   fi
 }
+
 main

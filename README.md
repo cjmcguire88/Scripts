@@ -9,6 +9,6 @@
 
 Anything that isn't a shell script has source code in src folder.
 
-Required packages (Arch Linux): base-devel, subversion
+Required packages (Arch Linux): base-devel
 
 kernel has been moved to it's own repository [custom-kernel-manager](https://www.github.com/cjmcguire88/custom-kernel-manager) as it's become a bit more than a script at this point.
