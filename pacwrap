@@ -125,7 +125,7 @@ update_aur() {
   echo
   if [[ "$ANSWER" =~ ^[Yy]$ ]]; then
     pac_logo
-    if paru -Sua --noconfirm; then
+    if paru -Sua --upgrademenu; then
       ghost_success
     else
       ghost_error
