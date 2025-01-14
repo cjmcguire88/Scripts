@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+i2c_read() {
+  ch341eeprom -v -s 24c02 -r "$1"
+  xxd "$1"
+}
+
+while getopts ':r:w:v:' flag; do
+  case "${flag}" in
+  r)
+    i2c_read "${OPTARG}"
+    ;;
+  w)
+    ch341eeprom -v -s 24c02 -w "${OPTARG}"
+    ;;
+  v)
+    ch341eeprom -v -s 24c02 -V "${OPTARG}"
+    ;;
+  *)
+    echo "Usage: $0 [-r filename] [-w filename] [-v filename]"
+    ;;
+  esac
+done

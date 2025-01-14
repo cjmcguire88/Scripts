@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+while getopts ":m:s:" opt; do
+  case $opt in
+  m)
+    awk -F "," '{print $7}' $OPTARG | sort | uniq -cd
+    ;;
+  s)
+    awk -F "," '{print $8}' $OPTARG | sort | uniq -cd
+    ;;
+  *)
+    echo "Invalid option" >&2
+    ;;
+  esac
+done

@@ -10,7 +10,10 @@ fi
 
 BRIGHTNESS=$(brightnessctl get)
 BRIGHTNESS=$((BRIGHTNESS * 100 / 255))
-NOTI_ID=$(notify-send.py "Brightness" "$BRIGHTNESS%" \
-  --hint string:image-path:video-display boolean:transient:true \
-  int:has-percentage:$BRIGHTNESS \
-  --replaces-process "brightness-popup")
+
+# Send notification with standard notify-send
+notify-send "Brightness" "$BRIGHTNESS%" \
+  -i video-display \
+  -h string:x-canonical-private-synchronous:brightness-popup \
+  --hint=int:value:"$BRIGHTNESS" \
+  --expire-time=1000

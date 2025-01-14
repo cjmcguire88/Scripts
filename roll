@@ -12,8 +12,8 @@
 # Modified so that all files are local
 
 # edit these variables to the correct directories
-vid="$HOME/Scripts/libs/rick.vid"
-aud="$HOME/Scripts/libs/roll.aud"
+vid="$HOME/Scripts/rick-roll/rick.vid"
+aud="$HOME/Scripts/rick-roll/roll.aud"
 audpid=0
 echo -en '\x1b[s' # Save cursor.
 

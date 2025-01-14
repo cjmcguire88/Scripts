@@ -31,12 +31,13 @@ function main() {
     ICON=audio-volume-muted
     ;;
   esac
-  echo "$ICON"
 
-  NOTI_ID=$(notify-send.py "Volume" "$VOLUME%" \
-    --hint string:image-path:"$ICON" boolean:transient:true \
-    int:has-percentage:"$VOLUME" \
-    --replaces-process "volume-popup")
+  # Send notification with standard notify-send
+  notify-send "Volume" "$VOLUME%" \
+    -i "$ICON" \
+    -h string:x-canonical-private-synchronous:volume-popup \
+    --hint=int:value:"$VOLUME" \
+    --expire-time=1000
 }
 
 main "$@"
